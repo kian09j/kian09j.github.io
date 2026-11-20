@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>AI w pracy</title>
+<meta name="description" content="Cztery krótkie gry, które uczą pracy z AI: jak AI pisze, jak pisać polecenia, jak sprawdzać odpowiedzi i jak chronić dane. Four short games that teach people to work with AI.">
+<!-- Link preview for LinkedIn and other social sites -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kian09j.github.io/">
+<meta property="og:title" content="AI w pracy / AI at work">
+<meta property="og:description" content="Cztery krótkie gry szkoleniowe o pracy z AI. PL / EN.">
+<meta property="og:image" content="https://kian09j.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Robot Bajtek i tytuł serii AI w pracy">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M60 26V13' stroke='%2337352f' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='60' cy='10' r='8' fill='%23f5c84c' stroke='%2337352f' stroke-width='4'/%3E%3Crect x='10' y='26' width='100' height='84' rx='28' fill='%23ffffff' stroke='%2337352f' stroke-width='6'/%3E%3Crect x='24' y='42' width='72' height='52' rx='16' fill='%23f1f1ef' stroke='%2337352f' stroke-width='4'/%3E%3Cellipse cx='45' cy='66' rx='7' ry='10' fill='%2337352f'/%3E%3Cellipse cx='75' cy='66' rx='7' ry='10' fill='%2337352f'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #37352f;
+    --muted: #787774;
+    --faint: #9b9a97;
+    --line: #e9e9e7;
+    --hover: #f7f7f5;
+    --gray: #f1f1ef;
+    --blue: #2383e2;
+    --blue-hover: #0b6ec5;
+    --blue-bg: #e7f3f8;
+    --blue-text: #337ea9;
+    --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Helvetica, Arial, sans-serif, "Segoe UI Emoji", "Apple Color Emoji";
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.55;
+    display: flex; justify-content: center; padding: 24px 16px 48px; overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .app { width: 100%; max-width: 760px; }
+  a { color: var(--blue-text); }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding-bottom: 12px; margin-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .logo { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+  .logo .ai {
+    font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 85%;
+    color: #eb5757; background: rgba(135, 131, 120, 0.15); border-radius: 4px; padding: 1px 5px;
+  }
+  .lang { display: flex; gap: 2px; background: var(--gray); border-radius: 6px; padding: 2px; }
+  .lang button {
+    font: inherit; font-size: 13px; font-weight: 500; color: var(--muted);
+    background: transparent; border: 0; border-radius: 4px; padding: 2px 10px; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 2px rgba(15, 15, 15, 0.12); }
+  .lang button:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+
+  /* Mascot (Bajtek, the guide from the games) */
+  .mascot { display: block; width: 76px; height: 76px; margin: 22px 0 10px; overflow: visible; }
+  .mascot .eyes { transform-origin: 60px 56px; animation: blink 5s ease-in-out infinite; }
+  @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+
+  h1 { font-size: 40px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 12px; }
+  h2 { font-size: 22px; font-weight: 600; margin: 40px 0 6px; letter-spacing: -0.01em; }
+  .lead { font-size: 18px; color: var(--muted); margin: 0 0 14px; max-width: 620px; }
+  .author { margin: 0; font-size: 15px; }
+  .author a { margin-left: 8px; }
+  .section-lead { color: var(--muted); margin: 0 0 16px; }
+
+  .facts { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .facts li { font-size: 13px; font-weight: 500; border-radius: 4px; padding: 2px 9px; background: var(--gray); color: var(--muted); }
+
+  /* Game cards, in the order of the learning path */
+  .games { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .game {
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 1px 2px rgba(15, 15, 15, 0.04); transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .game:hover { border-color: #dcdcd9; box-shadow: 0 4px 14px rgba(15, 15, 15, 0.08); }
+  .game img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-bottom: 1px solid var(--line); background: var(--gray); }
+  .game .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .game .step { font-size: 12px; font-weight: 600; color: var(--blue-text); background: var(--blue-bg); border-radius: 4px; padding: 1px 7px; align-self: flex-start; }
+  .game h3 { margin: 2px 0 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .game p { margin: 0; color: var(--muted); font-size: 15px; }
+  .game .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .game .meta span { font-size: 12px; font-weight: 500; border-radius: 4px; padding: 1px 7px; background: var(--gray); color: var(--muted); }
+  .game .play { margin-top: auto; padding-top: 8px; }
+  .btn {
+    font: inherit; font-size: 15px; font-weight: 500; text-decoration: none; border-radius: 6px; padding: 7px 14px;
+    background: var(--blue); color: #fff; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: inset 0 0 0 1px rgba(15, 15, 15, 0.1), 0 1px 2px rgba(15, 15, 15, 0.1); transition: background 0.12s;
+  }
+  .btn:hover { background: var(--blue-hover); }
+  .btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  /* Learning path */
+  .path { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 20px; }
+  .path li { border-radius: 8px; padding: 12px 12px; background: var(--tint); position: relative; }
+  .path .verb { display: block; font-weight: 700; font-size: 17px; }
+  .path .game-name { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .path li:not(:last-child)::after {
+    content: "→"; position: absolute; right: -10px; top: 50%; transform: translate(50%, -50%);
+    color: var(--faint); font-size: 14px;
+  }
+
+  /* Principles */
+  .principles { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .principles li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; }
+  .principles .ico { font-size: 20px; line-height: 1.3; }
+  .principles strong { display: block; font-weight: 600; }
+  .principles p { margin: 2px 0 0; color: var(--muted); }
+
+  footer { margin-top: 44px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); }
+  footer a { color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .games { grid-template-columns: 1fr; }
+    .path { grid-template-columns: 1fr 1fr; }
+    .path li:nth-child(2)::after { content: none; }
+  }
+  @media (max-width: 480px) {
+    body { padding-top: 16px; }
+    h1 { font-size: 31px; }
+    .lead { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <div class="logo" id="logo">AI <span class="ai">w pracy</span></div>
+    <div class="lang" id="lang" role="group" aria-label="Język / Language">
+      <button type="button" data-lang="pl" aria-pressed="true">PL</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+  <main id="page"></main>
+  <footer id="footer"></footer>
+</div>
+
+<script>
+// Who made this. Anything left empty is simply not shown.
+const AUTHOR = {
+  name: "",
+  role: { pl: "", en: "" },
+  linkedin: "",
+  email: ""
+};
+
+const GITHUB = "https://github.com/kian09j";
+
+// The games, in the order of the learning path. Paths are relative to kian09j.github.io.
+const GAMES = [
+  { path: "/mysl_jak_ai/", repo: "mysl_jak_ai",
+    pl: { name: "Myśl jak AI", verb: "Zrozum", what: "Jak AI pisze teksty: zgaduje kolejne słowo. Stąd przewidywalne maile, losowość, rola kontekstu i halucynacje.", meta: ["13 rund", "5 minut", "Zgadywanie"] },
+    en: { name: "Think like AI", verb: "Understand", what: "How AI writes: it predicts the next word. That explains predictable emails, randomness, why context matters and hallucinations.", meta: ["13 rounds", "5 minutes", "Guessing"] } },
+  { path: "/popraw_polecenie/", repo: "popraw_polecenie",
+    pl: { name: "Popraw polecenie", verb: "Pisz", what: "Jak pisać dobre polecenia: fakty, odbiorca, format, źródło. I dlaczego „jesteś ekspertem” albo napiwek niewiele dają.", meta: ["4 zadania", "5 minut", "Budowanie polecenia"] },
+    en: { name: "Fix the prompt", verb: "Write", what: "How to write good prompts: facts, audience, format, source. And why “you are an expert” or a tip doesn't do much.", meta: ["4 tasks", "5 minutes", "Building a prompt"] } },
+  { path: "/zlap_halucynacje/", repo: "zlap_halucynacje",
+    pl: { name: "Złap halucynację", verb: "Sprawdzaj", what: "Jak sprawdzać teksty od AI: pomylone liczby, zmyślone badania i cytaty, zgubione warunki, szczegóły spoza źródła.", meta: ["4 teksty", "5 minut", "Szukanie błędów"] },
+    en: { name: "Catch the hallucination", verb: "Check", what: "How to check what AI writes: wrong numbers, made-up studies and quotes, dropped conditions, details that aren't in the source.", meta: ["4 texts", "5 minutes", "Spot the error"] } },
+  { path: "/czy_moge_to_wkleic/", repo: "czy_moge_to_wkleic",
+    pl: { name: "Czy mogę to wkleić?", verb: "Chroń dane", what: "Bezpieczeństwo danych: co można wkleić do AI, co tylko do firmowego narzędzia, a czego nigdzie.", meta: ["10 sytuacji", "4 minuty", "Sortowanie"] },
+    en: { name: "Can I paste this?", verb: "Protect data", what: "Data safety: what you can paste into AI, what belongs only in your company's tool, and what never goes in.", meta: ["10 situations", "4 minutes", "Sorting"] } }
+];
+
+const PATH_TINTS = ["#fadec9", "#e8deee", "#fbf3db", "#edf3ec"];
+
+const TEXT = {
+  pl: {
+    title: "AI w pracy",
+    logo: 'AI <span class="ai">w pracy</span>',
+    h1: "Gry, które uczą pracy z AI",
+    lead: "Cztery krótkie gry szkoleniowe dla osób, które na co dzień pracują przy komputerze. Każda trwa około 5 minut, działa w przeglądarce i uczy jednej umiejętności potrzebnej przy pracy z Copilotem albo ChatGPT.",
+    facts: ["4 gry", "około 20 minut w sumie", "polski i angielski", "działa na telefonie"],
+    by: "Autorka:",
+    gamesTitle: "Gry",
+    gamesLead: "Ułożone w kolejności, w jakiej najlepiej je przejść.",
+    step: "Krok",
+    play: "Zagraj",
+    code: "Kod",
+    pathTitle: "Ścieżka nauki",
+    pathLead: "Razem tworzą jedną ścieżkę: od zrozumienia, jak działa AI, do bezpiecznej codziennej pracy z nim. Można je przejść samodzielnie albo użyć jako ćwiczeń na warsztacie.",
+    principlesTitle: "Jak projektuję szkolenia",
+    principles: [
+      ["🎯", "Najpierw działasz, potem rozumiesz", "Gracz zgaduje, wybiera albo poprawia, a dopiero potem widzi wynik i krótkie wyjaśnienie. To zostaje w głowie dłużej niż wykład."],
+      ["⏱️", "Krótko i o jednej rzeczy", "Każda gra trwa około 5 minut i uczy jednej umiejętności. Na końcu jest ściągawka do zabrania do pracy."],
+      ["📎", "Przykłady z prawdziwej pracy", "Maile do klientów, notatki ze spotkań, regulaminy i ogłoszenia, a nie abstrakcyjne zagadki."],
+      ["🌍", "Dla każdego", "Dwa języki, działa na telefonie i z klawiatury, bez logowania i instalowania czegokolwiek."]
+    ],
+    footer: "Wszystkie gry są otwarte, a ich kod jest na GitHubie."
+  },
+  en: {
+    title: "AI at work",
+    logo: 'AI <span class="ai">at work</span>',
+    h1: "Games that teach people to work with AI",
+    lead: "Four short training games for people who work at a computer every day. Each one takes about 5 minutes, runs in the browser and teaches one skill you need when working with Copilot or ChatGPT.",
+    facts: ["4 games", "about 20 minutes in total", "Polish and English", "works on phones"],
+    by: "By",
+    gamesTitle: "Games",
+    gamesLead: "In the order that works best.",
+    step: "Step",
+    play: "Play",
+    code: "Code",
+    pathTitle: "Learning path",
+    pathLead: "Together they form one path: from understanding how AI works to using it safely every day. Play them on your own or use them as exercises in a workshop.",
+    principlesTitle: "How I design training",
+    principles: [
+      ["🎯", "Do first, understand second", "Players guess, choose or fix something, and only then see the result and a short explanation. That sticks longer than a lecture."],
+      ["⏱️", "Short, and about one thing", "Each game takes about 5 minutes and teaches one skill. It ends with a cheat sheet to take back to work."],
+      ["📎", "Examples from real work", "Customer emails, meeting notes, policies and job ads, not abstract puzzles."],
+      ["🌍", "For everyone", "Two languages, works on phones and with a keyboard, no sign-up and nothing to install."]
+    ],
+    footer: "All the games are free to play, and their code is on GitHub."
+  }
+};
+
+let lang = "pl";
+let T = TEXT.pl;
+const $ = (id) => document.getElementById(id);
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+const MASCOT = `
+  <svg class="mascot" viewBox="0 0 120 120" aria-hidden="true">
+    <g fill="none" stroke="#37352f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M35 99C27 99 24 95 23 90"/><path d="M85 99C93 99 96 95 97 90"/>
+      <rect x="34" y="88" width="52" height="26" rx="11" fill="#fff"/>
+      <path d="M60 108c-5-3.4-7.6-6-7.6-8.6a3.6 3.6 0 0 1 7.6-1.6a3.6 3.6 0 0 1 7.6 1.6c0 2.6-2.6 5.2-7.6 8.6z" fill="#e16259" stroke-width="2.5"/>
+      <path d="M60 26V14"/><circle cx="60" cy="9" r="5.5" fill="#f5c84c"/>
+      <rect x="8" y="46" width="11" height="20" rx="5" fill="#fff"/><rect x="101" y="46" width="11" height="20" rx="5" fill="#fff"/>
+      <rect x="16" y="24" width="88" height="64" rx="24" fill="#fff"/>
+      <rect x="28" y="37" width="64" height="40" rx="14" fill="#f1f1ef" stroke-width="2.5"/>
+    </g>
+    <g class="eyes">
+      <ellipse cx="47" cy="56" rx="5" ry="6.5" fill="#37352f"/><ellipse cx="73" cy="56" rx="5" ry="6.5" fill="#37352f"/>
+      <circle cx="48.6" cy="53.6" r="1.7" fill="#fff"/><circle cx="74.6" cy="53.6" r="1.7" fill="#fff"/>
+    </g>
+    <circle cx="37" cy="66" r="3.5" fill="#f5c0c0"/><circle cx="83" cy="66" r="3.5" fill="#f5c0c0"/>
+    <path d="M55 66q5 4.5 10 0" fill="none" stroke="#37352f" stroke-width="3" stroke-linecap="round"/>
+  </svg>`;
+
+function authorHTML() {
+  if (!AUTHOR.name) return "";
+  const role = AUTHOR.role[lang] ? ` · ${esc(AUTHOR.role[lang])}` : "";
+  const links = [
+    AUTHOR.linkedin ? `<a href="${esc(AUTHOR.linkedin)}">LinkedIn</a>` : "",
+    AUTHOR.email ? `<a href="mailto:${esc(AUTHOR.email)}">${esc(AUTHOR.email)}</a>` : ""
+  ].join("");
+  return `<p class="author">${esc(T.by)} <strong>${esc(AUTHOR.name)}</strong>${role}${links}</p>`;
+}
+
+function render() {
+  $("page").innerHTML = `
+    ${MASCOT}
+    <h1>${esc(T.h1)}</h1>
+    <p class="lead">${esc(T.lead)}</p>
+    ${authorHTML()}
+    <ul class="facts">${T.facts.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+
+    <h2>${esc(T.gamesTitle)}</h2>
+    <p class="section-lead">${esc(T.gamesLead)}</p>
+    <div class="games">
+      ${GAMES.map((g, i) => {
+        const d = g[lang];
+        return `
+        <article class="game">
+          <a href="${g.path}?lang=${lang}" tabindex="-1" aria-hidden="true"><img src="${g.path}og-image.png" alt="" loading="lazy" width="1200" height="630"></a>
+          <div class="body">
+            <span class="step">${esc(T.step)} ${i + 1} · ${esc(d.verb)}</span>
+            <h3>${esc(d.name)}</h3>
+            <p>${esc(d.what)}</p>
+            <div class="meta">${d.meta.map((m) => `<span>${esc(m)}</span>`).join("")}</div>
+            <div class="play"><a class="btn" href="${g.path}?lang=${lang}">${esc(T.play)}: ${esc(d.name)} →</a></div>
+          </div>
+        </article>`;
+      }).join("")}
+    </div>
+
+    <h2>${esc(T.pathTitle)}</h2>
+    <p class="section-lead">${esc(T.pathLead)}</p>
+    <ol class="path">
+      ${GAMES.map((g, i) => `<li style="--tint:${PATH_TINTS[i]}"><span class="verb">${esc(g[lang].verb)}</span><span class="game-name">${esc(g[lang].name)}</span></li>`).join("")}
+    </ol>
+
+    <h2>${esc(T.principlesTitle)}</h2>
+    <ul class="principles">
+      ${T.principles.map(([ico, t, d]) => `<li><span class="ico" aria-hidden="true">${ico}</span><div><strong>${esc(t)}</strong><p>${esc(d)}</p></div></li>`).join("")}
+    </ul>`;
+  $("footer").innerHTML = `${esc(T.footer)} <a href="${GITHUB}">github.com/kian09j</a>`;
+}
+
+function readSavedLang() {
+  try { return localStorage.getItem("lang"); } catch (e) { return null; }
+}
+
+// The language choice is shared with the games, which live on the same site.
+function setLang(l) {
+  lang = l === "en" ? "en" : "pl";
+  T = TEXT[lang];
+  document.documentElement.lang = lang;
+  document.title = T.title;
+  $("logo").innerHTML = T.logo;
+  document.querySelectorAll("#lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  try { localStorage.setItem("lang", lang); } catch (e) { /* storage unavailable */ }
+  render();
+}
+
+document.querySelectorAll("#lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+const urlLang = new URLSearchParams(location.search).get("lang");
+setLang(urlLang === "en" || urlLang === "pl" ? urlLang : readSavedLang() || "pl");
+</script>
+</body>
+</html>
