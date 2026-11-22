@@ -60,9 +60,7 @@
   .lang button:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
 
   /* Mascot (Bajtek, the guide from the games) */
-  .mascot { display: block; width: 76px; height: 76px; margin: 22px 0 10px; overflow: visible; }
-  .mascot .eyes { transform-origin: 60px 56px; animation: blink 5s ease-in-out infinite; }
-  @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+  .mascot { display: block; width: auto; height: 96px; margin: 22px 0 10px; }
 
   h1 { font-size: 40px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 12px; }
   h2 { font-size: 22px; font-weight: 600; margin: 40px 0 6px; letter-spacing: -0.01em; }
@@ -232,24 +230,7 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-const MASCOT = `
-  <svg class="mascot" viewBox="0 0 120 120" aria-hidden="true">
-    <g fill="none" stroke="#37352f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M35 99C27 99 24 95 23 90"/><path d="M85 99C93 99 96 95 97 90"/>
-      <rect x="34" y="88" width="52" height="26" rx="11" fill="#fff"/>
-      <path d="M60 108c-5-3.4-7.6-6-7.6-8.6a3.6 3.6 0 0 1 7.6-1.6a3.6 3.6 0 0 1 7.6 1.6c0 2.6-2.6 5.2-7.6 8.6z" fill="#e16259" stroke-width="2.5"/>
-      <path d="M60 26V14"/><circle cx="60" cy="9" r="5.5" fill="#f5c84c"/>
-      <rect x="8" y="46" width="11" height="20" rx="5" fill="#fff"/><rect x="101" y="46" width="11" height="20" rx="5" fill="#fff"/>
-      <rect x="16" y="24" width="88" height="64" rx="24" fill="#fff"/>
-      <rect x="28" y="37" width="64" height="40" rx="14" fill="#f1f1ef" stroke-width="2.5"/>
-    </g>
-    <g class="eyes">
-      <ellipse cx="47" cy="56" rx="5" ry="6.5" fill="#37352f"/><ellipse cx="73" cy="56" rx="5" ry="6.5" fill="#37352f"/>
-      <circle cx="48.6" cy="53.6" r="1.7" fill="#fff"/><circle cx="74.6" cy="53.6" r="1.7" fill="#fff"/>
-    </g>
-    <circle cx="37" cy="66" r="3.5" fill="#f5c0c0"/><circle cx="83" cy="66" r="3.5" fill="#f5c0c0"/>
-    <path d="M55 66q5 4.5 10 0" fill="none" stroke="#37352f" stroke-width="3" stroke-linecap="round"/>
-  </svg>`;
+const MASCOT = `<img class="mascot" src="bajtek/idle.png" alt="" width="248" height="288">`;
 
 function authorHTML() {
   if (!AUTHOR.name) return "";
