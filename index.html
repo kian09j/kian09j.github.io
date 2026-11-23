@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>AI w pracy: cztery krótkie gry o pracy z AI</title>
-<meta name="description" content="Cztery krótkie gry o pracy z AI: jak AI pisze, jak pisać polecenia, jak sprawdzać odpowiedzi i jak chronić dane. Około 20 minut, za darmo, bez logowania. Four short games about working with AI, in Polish and English.">
+<title>AI w pracy: pracuj z AI bez wpadek</title>
+<meta name="description" content="Cztery krótkie gry dla osób, które używają Copilota albo ChatGPT. W 20 minut nauczysz się pisać lepsze polecenia, wyłapywać zmyślone liczby i chronić dane firmy. Za darmo, bez logowania. Also in English.">
 <link rel="canonical" href="https://kian09j.github.io/">
 <!-- Link preview for LinkedIn and other social sites -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kian09j.github.io/">
-<meta property="og:title" content="AI w pracy / AI at work">
-<meta property="og:description" content="Cztery krótkie gry o pracy z AI. Około 20 minut, za darmo, PL / EN.">
+<meta property="og:title" content="AI w pracy: pracuj z AI bez wpadek">
+<meta property="og:description" content="Cztery krótkie gry, około 20 minut, za darmo i bez logowania. PL / EN.">
 <meta property="og:image" content="https://kian09j.github.io/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,8 +23,19 @@
 <link rel="stylesheet" href="site.css">
 <script>document.documentElement.classList.add("js");</script>
 <style>
-  /* Hero */
-  .hero-inner { display: grid; gap: var(--space-300); padding-top: var(--space-900); padding-bottom: var(--space-700); }
+  :root {
+    --success: #2a7348;
+    --success-soft: #e2f1e7;
+    --bar: #ececea;
+    --bar-top: #d3e5f6;
+  }
+
+  /* Nav: a small button for the main action, from 768px up (on phones it lives in the menu) */
+  .nav-cta { display: none; }
+  @media (min-width: 768px) { .nav-cta { display: inline-flex; } }
+
+  /* Hero: the pitch on the left, a playable round on the right */
+  .hero-inner { display: grid; gap: var(--space-700); padding-top: var(--space-900); padding-bottom: var(--space-700); }
   .hero-text { min-width: 0; }
   .hero-title {
     max-width: 680px; width: fit-content; padding-bottom: var(--space-75);
@@ -32,61 +43,84 @@
   }
   .hero-sub { max-width: 680px; margin-top: var(--space-200); }
   .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-100) var(--space-200); margin-top: var(--space-400); }
-  .facts { display: flex; flex-wrap: wrap; gap: var(--space-100) var(--space-300); margin-top: var(--space-500); }
-  .facts li { display: flex; align-items: center; gap: var(--space-75); }
-  .facts .icon { color: var(--text); }
-  .hero-art { position: relative; display: grid; place-items: center; width: 144px; height: 144px; order: -1; }
-  .hero-art::before { content: ""; position: absolute; inset: 0; border-radius: var(--radius-full); background: var(--accent-soft); }
-  .hero-art img { position: relative; width: auto; height: 128px; }
   @media (min-width: 960px) {
-    .hero-inner { grid-template-columns: minmax(0, 680px) 1fr; align-items: center; gap: var(--space-600); padding-top: var(--space-900); }
     .hero { padding-top: var(--space-700); }
-    .hero-art { order: 0; justify-self: center; width: 280px; height: 280px; }
-    .hero-art img { height: 240px; }
+    /* Top aligned, so the text stays put when the sample round grows after an answer */
+    .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 420px); align-items: start; gap: var(--space-600); }
+    .hero-text { padding-top: var(--space-800); }
   }
-  @media (min-width: 1200px) {
-    .hero-art { width: 360px; height: 360px; }
-    .hero-art img { height: 312px; }
+
+  /* Sample round from "Myśl jak AI" */
+  .demo {
+    position: relative; display: flex; flex-direction: column; gap: var(--space-200);
+    padding: var(--space-300); border: 1px solid var(--line); border-radius: var(--radius-3xl); background: var(--bg);
+    box-shadow: 0 32px 64px -32px rgba(25, 25, 25, 0.24);
   }
+  @media (min-width: 768px) { .demo { padding: var(--space-400); } }
+  .demo-bajtek { position: absolute; top: 0; right: var(--space-300); width: auto; height: 104px; transform: translateY(-62%); }
+  .demo-bajtek.pop { animation: pop var(--dur) var(--ease); }
+  @keyframes pop { from { opacity: 0; transform: translateY(-62%) scale(0.9); } }
+  .demo-kicker { color: var(--accent); padding-right: var(--space-900); }
+  .demo-sentence { padding: var(--space-200); border-radius: var(--radius-xl); background: var(--surface); }
+  .demo-blank { color: var(--muted); }
+  .demo-blank.filled { color: var(--accent); }
+  .demo-options { display: flex; flex-direction: column; gap: var(--space-75); }
+  .demo-opt {
+    position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: var(--space-100);
+    width: 100%; padding: var(--space-100) var(--space-200); border: 1px solid var(--line-strong); border-radius: var(--radius-xl);
+    background: var(--bg); color: var(--text); text-align: left; cursor: pointer;
+    transition: background-color var(--dur-hover) var(--ease), border-color var(--dur-hover) var(--ease), transform var(--dur) var(--ease);
+  }
+  .demo-opt:hover { background: var(--surface); border-color: var(--muted); }
+  .demo-opt:active { transform: scale(0.98); }
+  .demo-opt > :not(.demo-fill) { position: relative; }
+  .demo-left { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-75); }
+  .demo-tags { display: flex; gap: var(--space-50); }
+  .demo-tag { padding: var(--space-25) var(--space-75); border-radius: var(--radius-md); }
+  .tag-mine { background: var(--text); color: var(--bg); }
+  .tag-true { background: var(--success-soft); color: var(--success); }
+  .demo-fill {
+    position: absolute; inset: 0; background: var(--bar); transform-origin: left center; transform: scaleX(0);
+    transition: transform var(--dur-reveal) var(--ease); transition-delay: calc(var(--i) * 60ms);
+  }
+  .demo-opt.top .demo-fill { background: var(--bar-top); }
+  .demo-pct { opacity: 0; transition: opacity var(--dur) var(--ease); }
+  .answered .demo-opt { cursor: default; }
+  .answered .demo-opt:hover { background: var(--bg); border-color: var(--line-strong); }
+  .answered .demo-opt:active { transform: none; }
+  .answered .demo-opt.mine { border-color: var(--text); }
+  .answered .demo-fill { transform: scaleX(var(--p)); }
+  .answered .demo-pct { opacity: 1; transition-delay: calc(var(--i) * 60ms + 200ms); }
+  .demo-result { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-100); }
+  .demo-result:not([hidden]) { animation: rise-in var(--dur) var(--ease); }
+  .demo-result .btn { margin-top: var(--space-75); }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(var(--space-75)); } }
 
   /* Sections */
   .section { padding-block: var(--space-700); scroll-margin-top: var(--space-800); }
   @media (min-width: 768px) { .section { padding-block: var(--space-900); } }
   .section-head { display: flex; flex-direction: column; gap: var(--space-200); max-width: 680px; margin-bottom: var(--space-600); }
+  .section-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-100) var(--space-200); margin-top: var(--space-600); }
 
-  /* Game cards: a flat top in the step's color with Bajtek, then the benefit and details */
-  .games { display: grid; gap: var(--space-300); }
-  @media (min-width: 768px) { .games { grid-template-columns: 1fr 1fr; } }
-  .game {
-    position: relative; display: flex; flex-direction: column; overflow: hidden;
+  /* Problem and fix: each everyday blunder next to the game that fixes it.
+     Card radius 16 with 8 inside, so the tinted panel gets 8. */
+  .fixes { display: flex; flex-direction: column; gap: var(--space-200); }
+  .fix {
+    display: grid; gap: var(--space-75); padding: var(--space-75);
     border: 1px solid var(--line); border-radius: var(--radius-2xl); background: var(--bg);
-    transition: transform var(--dur) var(--ease), border-color var(--dur-hover) var(--ease);
+    transition: border-color var(--dur-hover) var(--ease);
   }
-  .game::before {
-    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
-    box-shadow: 0 24px 48px -24px rgba(25, 25, 25, 0.22); opacity: 0; transition: opacity var(--dur) var(--ease);
-  }
-  .game { isolation: isolate; }
-  .game:hover { transform: translateY(calc(var(--space-50) * -1)); border-color: var(--line-strong); }
-  .game:hover::before { opacity: 1; }
-  .game:has(a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .game-top {
-    display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-200);
-    min-height: 152px; padding: var(--space-300) var(--space-300) 0; background: var(--tint);
-  }
-  .game-label { display: flex; flex-direction: column; gap: var(--space-50); align-self: center; padding-bottom: var(--space-300); }
-  .game-step { color: var(--on-tint); }
-  .game-top img { width: auto; height: 128px; transform-origin: 50% 100%; transition: transform var(--dur) var(--ease); }
-  .game:hover .game-top img { transform: translateY(calc(var(--space-50) * -1)) rotate(-3deg); }
-  .game-body { display: flex; flex-direction: column; gap: var(--space-100); flex: 1; padding: var(--space-300); }
-  .meta { display: flex; flex-wrap: wrap; gap: var(--space-75); }
-  .meta li { padding: var(--space-25) var(--space-75); border-radius: var(--radius-md); background: var(--surface); color: var(--muted); }
-  .game-play { margin-top: auto; padding-top: var(--space-200); }
-  .game .btn:hover { transform: none; }
-  .game:hover .btn-secondary { background: var(--surface); }
-  .game:hover .btn .icon-move { transform: translateX(var(--space-50)); }
-  /* The Play link stretches over the whole card, so a click anywhere on it starts the game */
-  .game-play a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius-2xl); }
+  .fix:hover { border-color: var(--line-strong); }
+  @media (min-width: 768px) { .fix { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  .fix-problem { display: flex; align-items: flex-start; gap: var(--space-200); padding: var(--space-300); }
+  .fix-problem .icon { color: var(--muted); }
+  .fix-solution { display: flex; align-items: center; gap: var(--space-200); padding: var(--space-200) var(--space-300); border-radius: var(--radius-lg); background: var(--tint); }
+  .fix-solution img { flex-shrink: 0; width: auto; height: 88px; transform-origin: 50% 100%; transition: transform var(--dur) var(--ease); }
+  .fix:hover .fix-solution img { transform: translateY(calc(var(--space-50) * -1)) rotate(-3deg); }
+  .fix-copy { display: flex; flex-direction: column; gap: var(--space-50); }
+  .fix-step { color: var(--on-tint); }
+  .fix-name a { text-decoration: none; }
+  .fix-name a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
   /* Tagline reveal: each word goes from muted to full color as the section scrolls into view */
   .tagline { padding-block: var(--space-700); }
@@ -125,8 +159,7 @@
   .faq-item[open] summary .icon { transform: rotate(180deg); }
   .faq-answer { padding: 0 var(--space-300) var(--space-200); }
   .faq-answer a { color: var(--accent); text-underline-offset: 4px; }
-  .faq-item[open] .faq-answer { animation: faq-in var(--dur) var(--ease); }
-  @keyframes faq-in { from { opacity: 0; transform: translateY(calc(var(--space-75) * -1)); } }
+  .faq-item[open] .faq-answer { animation: rise-in var(--dur) var(--ease); }
 
   /* Final call to action, identical to the top one */
   .final { padding-block: var(--space-300) var(--space-500); }
@@ -178,11 +211,11 @@
 
   @media (prefers-reduced-motion: reduce) {
     .js .reveal { transform: none; }
-    .js .stagger.in > * { animation-name: fade; }
+    .js .stagger.in > *, .demo-result:not([hidden]), .faq-item[open] .faq-answer, .demo-bajtek.pop { animation-name: fade; }
     .tagline .w { opacity: 1; transition: none; }
+    .demo-fill, .demo-pct { transition: none; }
     .menu li { transform: none; }
-    .game:hover, .game:hover .game-top img, .game:hover .btn .icon-move, .faq-item[open] summary .icon { transform: none; }
-    .faq-item[open] .faq-answer { animation-name: fade; }
+    .fix:hover .fix-solution img, .demo-opt:active, .faq-item[open] summary .icon { transform: none; }
   }
 </style>
 </head>
@@ -197,6 +230,7 @@
     <button type="button" class="button-xsm" data-lang="pl" aria-pressed="true">PL</button>
     <button type="button" class="button-xsm" data-lang="en" aria-pressed="false">EN</button>
   </div>
+  <a class="btn btn-primary button-sm nav-cta" id="nav-cta" href="/mysl_jak_ai/">Zagraj</a>
   <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Otwórz menu"><span></span><span></span></button>
 </nav>
 <div class="menu" id="menu" inert><ul class="container" id="menu-list"></ul></div>
@@ -213,6 +247,7 @@
   </noscript>
 </main>
 <footer class="footer" id="footer"></footer>
+<p class="sr-only" id="demo-live" aria-live="polite"></p>
 
 <script>
 const GITHUB = "https://github.com/kian09j";
@@ -223,51 +258,77 @@ const ICONS = {
   "caret-down": "M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z",
   "check-circle": "M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z",
   "clipboard-text": "M168,152a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,152Zm-8-40H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm56-64V216a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V48A16,16,0,0,1,56,32H92.26a47.92,47.92,0,0,1,71.48,0H200A16,16,0,0,1,216,48ZM96,64h64a32,32,0,0,0-64,0ZM200,48H173.25A47.93,47.93,0,0,1,176,64v8a8,8,0,0,1-8,8H88a8,8,0,0,1-8-8V64a47.93,47.93,0,0,1,2.75-16H56V216H200Z",
-  "clock": "M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z",
-  "device-mobile": "M176,16H80A24,24,0,0,0,56,40V216a24,24,0,0,0,24,24h96a24,24,0,0,0,24-24V40A24,24,0,0,0,176,16ZM72,64H184V192H72Zm8-32h96a8,8,0,0,1,8,8v8H72V40A8,8,0,0,1,80,32Zm96,192H80a8,8,0,0,1-8-8v-8H184v8A8,8,0,0,1,176,224Z",
   "game-controller": "M176,112H152a8,8,0,0,1,0-16h24a8,8,0,0,1,0,16ZM104,96H96V88a8,8,0,0,0-16,0v8H72a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16ZM241.48,200.65a36,36,0,0,1-54.94,4.81c-.12-.12-.24-.24-.35-.37L146.48,160h-37L69.81,205.09l-.35.37A36.08,36.08,0,0,1,44,216,36,36,0,0,1,8.56,173.75a.68.68,0,0,1,0-.14L24.93,89.52A59.88,59.88,0,0,1,83.89,40H172a60.08,60.08,0,0,1,59,49.25c0,.06,0,.12,0,.18l16.37,84.17a.68.68,0,0,1,0,.14A35.74,35.74,0,0,1,241.48,200.65ZM172,144a44,44,0,0,0,0-88H83.89A43.9,43.9,0,0,0,40.68,92.37l0,.13L24.3,176.59A20,20,0,0,0,58,194.3l41.92-47.59a8,8,0,0,1,6-2.71Zm59.7,32.59-8.74-45A60,60,0,0,1,172,160h-4.2L198,194.31a20.09,20.09,0,0,0,17.46,5.39,20,20,0,0,0,16.23-23.11Z",
   "github-logo": "M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z",
   "lightbulb": "M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z",
-  "translate": "M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.76,87.76,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z"
+  "quotes": "M100,56H40A16,16,0,0,0,24,72v64a16,16,0,0,0,16,16h60v8a32,32,0,0,1-32,32,8,8,0,0,0,0,16,48.05,48.05,0,0,0,48-48V72A16,16,0,0,0,100,56Zm0,80H40V72h60ZM216,56H156a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h60v8a32,32,0,0,1-32,32,8,8,0,0,0,0,16,48.05,48.05,0,0,0,48-48V72A16,16,0,0,0,216,56Zm0,80H156V72h60Z"
 };
 const icon = (name, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="${ICONS[name]}"/></svg>`;
 
-// The games, in the order of the learning path. Paths are relative to kian09j.github.io.
-// mood: which Bajtek picture (bajtek/<mood>.png) shows on the game card.
+// The games, in the order of the learning path, each paired with the everyday problem it fixes.
+// mood: which Bajtek picture (bajtek/<mood>.png) shows next to the game.
 const GAMES = [
   { path: "/mysl_jak_ai/", mood: "think", tint: "#fadec9",
-    pl: { name: "Myśl jak AI", verb: "Zrozum", benefit: "Wiesz, skąd biorą się błędy AI.", what: "Jak AI pisze teksty: zgaduje kolejne słowo. Stąd przewidywalne maile, losowość, rola kontekstu i halucynacje.", meta: ["13 rund", "5 minut", "Zgadywanie"] },
-    en: { name: "Think like AI", verb: "Understand", benefit: "Know where AI mistakes come from.", what: "How AI writes: it predicts the next word. That explains predictable emails, randomness, why context matters and hallucinations.", meta: ["13 rounds", "5 minutes", "Guessing"] } },
+    pl: { name: "Myśl jak AI", minutes: "5 minut", problem: "Mail napisany przez AI brzmi jak tysiąc innych maili.", fix: "Zrozumiesz, dlaczego AI pisze tak przewidywalnie i jak to zmienić kontekstem." },
+    en: { name: "Think like AI", minutes: "5 minutes", problem: "The email AI wrote sounds like a thousand others.", fix: "Learn why AI writes so predictably and how context changes that." } },
   { path: "/popraw_polecenie/", mood: "happy", tint: "#e8deee",
-    pl: { name: "Popraw polecenie", verb: "Pisz", benefit: "Piszesz polecenia, które dają konkretne odpowiedzi.", what: "Jak pisać dobre polecenia: fakty, odbiorca, format, źródło. I dlaczego „jesteś ekspertem” albo napiwek niewiele dają.", meta: ["4 zadania", "5 minut", "Budowanie polecenia"] },
-    en: { name: "Fix the prompt", verb: "Write", benefit: "Write prompts that get specific answers.", what: "How to write good prompts: facts, audience, format, source. And why “you are an expert” or a tip doesn't do much.", meta: ["4 tasks", "5 minutes", "Building a prompt"] } },
+    pl: { name: "Popraw polecenie", minutes: "5 minut", problem: "Poprawiasz polecenie trzeci raz, a odpowiedź dalej jest ogólna.", fix: "Nauczysz się dawać AI fakty, odbiorcę, format i źródło." },
+    en: { name: "Fix the prompt", minutes: "5 minutes", problem: "You rewrite the prompt a third time and the answer is still vague.", fix: "Learn to give AI facts, an audience, a format and a source." } },
   { path: "/zlap_halucynacje/", mood: "oops", tint: "#fbf3db",
-    pl: { name: "Złap halucynację", verb: "Sprawdzaj", benefit: "Wyłapujesz błędy, zanim tekst pójdzie dalej.", what: "Jak sprawdzać teksty od AI: pomylone liczby, zmyślone badania i cytaty, zgubione warunki, szczegóły spoza źródła.", meta: ["4 teksty", "5 minut", "Szukanie błędów"] },
-    en: { name: "Catch the hallucination", verb: "Check", benefit: "Catch errors before the text goes out.", what: "How to check what AI writes: wrong numbers, made up studies and quotes, dropped conditions, details that aren't in the source.", meta: ["4 texts", "5 minutes", "Spot the error"] } },
+    pl: { name: "Złap halucynację", minutes: "5 minut", problem: "W podsumowaniu od AI jest liczba, której nie było w raporcie.", fix: "Nauczysz się wyłapywać zmyślone liczby, cytaty i zgubione warunki." },
+    en: { name: "Catch the hallucination", minutes: "5 minutes", problem: "The AI summary has a number that wasn't in the report.", fix: "Learn to catch made up numbers, quotes and dropped conditions." } },
   { path: "/czy_moge_to_wkleic/", mood: "idle", tint: "#edf3ec",
-    pl: { name: "Czy mogę to wkleić?", verb: "Chroń dane", benefit: "Wiesz, czego nie wklejać do czatu.", what: "Bezpieczeństwo danych: co można wkleić do AI, co tylko do firmowego narzędzia, a czego nigdzie.", meta: ["10 sytuacji", "4 minuty", "Sortowanie"] },
-    en: { name: "Can I paste this?", verb: "Protect data", benefit: "Know what never goes into a chat.", what: "Data safety: what you can paste into AI, what belongs only in your company's tool, and what never goes in.", meta: ["10 situations", "4 minutes", "Sorting"] } }
+    pl: { name: "Czy mogę to wkleić?", minutes: "4 minuty", problem: "Nie wiesz, czy dane klienta można wkleić do czatu.", fix: "Będziesz wiedzieć, co wkleić, co tylko do firmowego AI, a czego nigdzie." },
+    en: { name: "Can I paste this?", minutes: "4 minutes", problem: "You're not sure if client data can go into the chat.", fix: "Know what you can paste, what only goes into your company's AI, and what never does." } }
 ];
+
+// A real round from "Myśl jak AI" (round 6), with the game's own example probabilities
+const DEMO = {
+  options: [["10%", 34], ["15%", 27], ["20%", 22], ["3%", 17]],
+  top: 0,
+  truth: 3,
+  pl: {
+    kicker: "Spróbuj teraz · runda z gry Myśl jak AI",
+    title: "Które słowo wybierze AI?",
+    sentence: "W trzecim kwartale nasza sprzedaż wzrosła o",
+    mine: "Twój wybór",
+    inReport: "W raporcie",
+    result: "AI najczęściej wybiera 10%. W Twoim raporcie: 3%.",
+    lesson: "Najbardziej prawdopodobne nie znaczy prawdziwe. Gdy AI nie widzi danych, wymyśla przekonująco brzmiącą liczbę. To jest halucynacja. Liczby zawsze sprawdzaj.",
+    cta: "Zagraj dalej: 12 kolejnych rund",
+    note: "Prawdopodobieństwa są przykładowe, żeby pokazać zasadę działania."
+  },
+  en: {
+    kicker: "Try it now · a round from Think like AI",
+    title: "Which word will AI pick?",
+    sentence: "In the third quarter, our sales grew by",
+    mine: "Your pick",
+    inReport: "In the report",
+    result: "AI usually picks 10%. In your report: 3%.",
+    lesson: "Most likely doesn't mean true. When AI can't see the data, it makes up a convincing number. That's called a hallucination. Always check the numbers.",
+    cta: "Keep playing: 12 more rounds",
+    note: "The probabilities are examples, to show how it works."
+  }
+};
 
 const TEXT = {
   pl: {
-    title: "AI w pracy: cztery krótkie gry o pracy z AI",
+    title: "AI w pracy: pracuj z AI bez wpadek",
     logo: 'AI <span>w pracy</span>',
     skip: "Przejdź do treści",
     navLabel: "Nawigacja",
-    nav: ["Gry", "Jak to działa", "Pytania"],
+    nav: ["Program", "Jak to działa", "Pytania"],
+    navCta: "Zagraj",
     menuOpen: "Otwórz menu",
     menuClose: "Zamknij menu",
-    h1: ["Lepsza praca z AI", "w 20 minut gry"],
-    lead: "Cztery krótkie gry dla osób, które używają Copilota albo ChatGPT w pracy. Każda trwa około 5 minut i uczy jednej umiejętności: od tego, jak AI pisze, po to, czego nie wklejać do czatu.",
+    h1: ["Pracuj z AI", "bez wpadek"],
+    lead: "Cztery krótkie gry dla osób, które używają Copilota albo ChatGPT. W 20 minut nauczysz się pisać lepsze polecenia, wyłapywać zmyślone liczby i chronić dane firmy.",
     cta: "Zagraj w pierwszą grę",
-    ctaNote: "Za darmo, bez logowania",
-    factsLabel: "W skrócie",
-    facts: [["clock", "4 gry, około 20 minut"], ["translate", "Po polsku i po angielsku"], ["device-mobile", "Działa też na telefonie"]],
-    gamesTitle: "Cztery gry, jedna ścieżka",
-    gamesLead: "Od tego, jak AI pisze, do bezpiecznej codziennej pracy z nim. Najlepiej grać po kolei, ale każda gra działa też osobno.",
+    ctaNote: "Za darmo, bez logowania, około 20 minut",
+    programTitle: "Brzmi znajomo?",
+    programLead: "Cztery typowe wpadki przy pracy z AI. Na każdą jest jedna krótka gra, a wszystkie razem zajmują około 20 minut.",
     step: "Krok",
-    play: "Zagraj",
+    programNote: "Zacznij od kroku 1. Po każdej grze zobaczysz linki do kolejnych.",
     tagline: ["AI pisze to,", "co najbardziej prawdopodobne.", "Ty decydujesz,", "co jest prawdziwe."],
     howTitle: "Jak to działa",
     howLead: "Każda gra to seria krótkich rund. Bez wykładu i bez slajdów.",
@@ -277,42 +338,41 @@ const TEXT = {
       ["clipboard-text", "Zabierz ściągawkę", "Na końcu dostajesz zasady do zabrania do pracy, na przykład przepis na dobre polecenie."]
     ],
     faqTitle: "Częste pytania",
-    faqLead: "Krótko o kosztach, czasie, danych i o tym, jak użyć gier na szkoleniu.",
+    faqLead: "Krótkie odpowiedzi przed pierwszą grą.",
     faq: [
+      ["Nie znam się na AI. Czy to dla mnie?", "Tak. Pierwsza gra zaczyna od podstaw: pokazuje, jak AI w ogóle pisze tekst. Nie musisz nic wiedzieć wcześniej."],
+      ["Używam AI codziennie. Czy dowiem się czegoś nowego?", "Prawdopodobnie tak. Gry 3 i 4 uczą rzeczy, które łatwo przeoczyć nawet przy codziennej pracy z AI: zgubionych warunków, zmyślonych źródeł i tego, czego nie wklejać do darmowego czatu."],
       ["Ile to kosztuje?", "Nic. Wszystkie gry są za darmo i nie trzeba zakładać konta."],
-      ["Czy potrzebuję Copilota albo ChatGPT?", "Nie. Gry działają same w przeglądarce i nie łączą się z żadnym narzędziem AI. Ćwiczysz na gotowych przykładach, a potem korzystasz z tego w narzędziu, którego używasz w pracy."],
-      ["Ile czasu to zajmuje?", "Około 5 minut na grę, czyli około 20 minut na wszystkie cztery. Nie musisz przechodzić ich za jednym razem."],
-      ["W jakiej kolejności grać?", "Najlepiej od kroku 1 do 4, bo tak ułożona jest ścieżka: od zrozumienia AI do bezpiecznej pracy z nim. Każdą grę możesz też otworzyć osobno."],
-      ["Czy mogę użyć gier na szkoleniu?", "Tak. Wyślij uczestnikom link albo pokaż grę na ekranie i grajcie razem. Każda gra to gotowe ćwiczenie na około 5 minut."],
-      ["Czy gry zbierają moje dane?", "Nie. Nie ma kont, plików cookie ani statystyk odwiedzin. Przeglądarka zapamiętuje tylko wybrany język, a Twoje odpowiedzi znikają po zamknięciu strony.", ["Więcej o prywatności", "privacy.html#privacy"]],
-      ["Czy gry działają na telefonie?", "Tak. Działają na telefonie, tablecie i komputerze, także z samej klawiatury."],
-      ["W jakich językach są gry?", "Po polsku i po angielsku. Język zmienisz przełącznikiem PL / EN u góry strony, a gry zapamiętają Twój wybór."]
+      ["Ile czasu potrzebuję?", "Około 5 minut na grę, czyli około 20 minut na wszystkie cztery. Możesz zagrać w jedną dziś, a w kolejną jutro."],
+      ["Czy potrzebuję Copilota albo ChatGPT?", "Nie. Gry działają same w przeglądarce i nie łączą się z żadnym narzędziem AI. To, czego się nauczysz, wykorzystasz potem w narzędziu, którego używasz w pracy."],
+      ["Czy moje odpowiedzi gdzieś trafiają?", "Nie. Nie ma kont, plików cookie ani statystyk odwiedzin. Przeglądarka zapamiętuje tylko wybrany język, a odpowiedzi znikają po zamknięciu strony.", ["Więcej o prywatności", "privacy.html#privacy"]],
+      ["Czy mogę wysłać gry współpracownikom?", "Tak. Wystarczy wysłać link do tej strony. Gry działają bez logowania, na telefonie i na komputerze."],
+      ["W jakim języku są gry?", "Po polsku i po angielsku. Język zmienisz przełącznikiem PL / EN u góry strony, a gry zapamiętają Twój wybór."]
     ],
-    finalTitle: ["Zacznij od gry o tym,", "jak AI zgaduje słowa"],
-    finalLead: "Pierwsza gra trwa około 5 minut. Pozostałe trzy możesz przejść od razu albo innego dnia.",
+    finalTitle: ["Dwadzieścia minut teraz,", "mniej wpadek potem"],
+    finalLead: "Pierwsza gra trwa około 5 minut. Po niej zobaczysz linki do kolejnych.",
     assurances: ["Za darmo", "Bez logowania", "Nic do instalowania"],
     footer: "Krótkie gry o pracy z AI. Kod wszystkich gier jest publiczny na GitHubie.",
     privacy: "Prywatność",
     terms: "Zasady korzystania"
   },
   en: {
-    title: "AI at work: four short games about working with AI",
+    title: "AI at work: use AI without blunders",
     logo: 'AI <span>at work</span>',
     skip: "Skip to content",
     navLabel: "Navigation",
-    nav: ["Games", "How it works", "FAQ"],
+    nav: ["What you learn", "How it works", "FAQ"],
+    navCta: "Play",
     menuOpen: "Open menu",
     menuClose: "Close menu",
-    h1: ["Learn to use AI well", "in 20 minutes of play"],
-    lead: "Four short games for people who use Copilot or ChatGPT at work. Each takes about 5 minutes and teaches one skill, from how AI writes to what never to paste into a chat.",
+    h1: ["Use AI at work", "without blunders"],
+    lead: "Four short games for people who use Copilot or ChatGPT. In 20 minutes you learn to write better prompts, catch made up numbers and keep company data safe.",
     cta: "Play the first game",
-    ctaNote: "Free, no sign up",
-    factsLabel: "At a glance",
-    facts: [["clock", "4 games, about 20 minutes"], ["translate", "In Polish and English"], ["device-mobile", "Works on your phone too"]],
-    gamesTitle: "Four games, one path",
-    gamesLead: "From how AI writes to using it safely every day. They work best in order, but each one also stands on its own.",
+    ctaNote: "Free, no sign up, about 20 minutes",
+    programTitle: "Sound familiar?",
+    programLead: "Four common blunders when working with AI. Each one has its own short game, and all four take about 20 minutes.",
     step: "Step",
-    play: "Play",
+    programNote: "Start with step 1. After each game you'll see links to the next ones.",
     tagline: ["AI writes", "what sounds most likely.", "You decide", "what is true."],
     howTitle: "How it works",
     howLead: "Each game is a series of short rounds. No lecture, no slides.",
@@ -322,19 +382,19 @@ const TEXT = {
       ["clipboard-text", "Take the cheat sheet", "At the end you get rules to take back to work, like the recipe for a good prompt."]
     ],
     faqTitle: "Common questions",
-    faqLead: "The short version on cost, time, data and using the games in a training session.",
+    faqLead: "Quick answers before your first game.",
     faq: [
+      ["I don't know much about AI. Is this for me?", "Yes. The first game starts from the basics: how AI writes text in the first place. You don't need to know anything beforehand."],
+      ["I use AI every day. Will I learn anything new?", "Probably. Games 3 and 4 cover things that are easy to miss even with daily use: dropped conditions, made up sources, and what never to paste into a free chat."],
       ["How much does it cost?", "Nothing. All the games are free and you don't need an account."],
-      ["Do I need Copilot or ChatGPT?", "No. The games run on their own in your browser and don't connect to any AI tool. You practice on ready examples, then use what you learned in the tool you have at work."],
-      ["How long does it take?", "About 5 minutes per game, so about 20 minutes for all four. You don't have to play them in one go."],
-      ["In what order should I play?", "Step 1 to 4 works best, because that is how the path is built: from understanding AI to using it safely. You can also open any game on its own."],
-      ["Can I use the games in a training session?", "Yes. Send people the link, or put a game on the screen and play it together. Each game is a ready exercise of about 5 minutes."],
-      ["Do the games collect my data?", "No. There are no accounts, cookies or visitor statistics. Your browser only remembers the language you picked, and your answers are gone when you close the page.", ["More about privacy", "privacy.html#privacy"]],
-      ["Do the games work on phones?", "Yes. They work on phones, tablets and computers, and with a keyboard alone."],
+      ["How much time do I need?", "About 5 minutes per game, so about 20 minutes for all four. You can play one today and the next one tomorrow."],
+      ["Do I need Copilot or ChatGPT?", "No. The games run on their own in your browser and don't connect to any AI tool. You use what you learn later, in the tool you have at work."],
+      ["Do my answers go anywhere?", "No. There are no accounts, cookies or visitor statistics. Your browser only remembers the language you picked, and your answers are gone when you close the page.", ["More about privacy", "privacy.html#privacy"]],
+      ["Can I send the games to coworkers?", "Yes. Just send them the link to this page. The games work without signing up, on phones and computers."],
       ["Which languages are the games in?", "Polish and English. Switch with PL / EN at the top of the page, and the games will remember your choice."]
     ],
-    finalTitle: ["Start with the game about", "how AI guesses words"],
-    finalLead: "The first game takes about 5 minutes. Play the other three right after, or another day.",
+    finalTitle: ["Twenty minutes now,", "fewer blunders later"],
+    finalLead: "The first game takes about 5 minutes. When it ends, you'll see links to the next ones.",
     assurances: ["Free", "No sign up", "Nothing to install"],
     footer: "Short games about working with AI. The code for every game is public on GitHub.",
     privacy: "Privacy",
@@ -342,7 +402,7 @@ const TEXT = {
   }
 };
 
-const SECTIONS = ["games", "how", "faq"];
+const SECTIONS = ["program", "how", "faq"];
 let lang = "pl";
 let T = TEXT.pl;
 const $ = (id) => document.getElementById(id);
@@ -360,6 +420,55 @@ function ctaButton() {
   return `<a class="btn btn-primary button-md" href="${gameHref(GAMES[0])}">${esc(T.cta)}${icon("arrow-right", "icon-sm icon-move")}</a>`;
 }
 
+function demoHTML() {
+  const d = DEMO[lang];
+  return `
+    <div class="demo" id="demo">
+      <img class="demo-bajtek" id="demo-bajtek" src="bajtek/think.png" alt="" width="248" height="288">
+      <p class="caption-3 demo-kicker">${esc(d.kicker)}</p>
+      <h2 class="title-1" id="demo-title">${esc(d.title)}</h2>
+      <p class="demo-sentence body-2">${esc(d.sentence)} <span class="demo-blank" id="demo-blank">___</span></p>
+      <div class="demo-options" role="group" aria-labelledby="demo-title">
+        ${DEMO.options.map(([word, p], i) => `
+          <button type="button" class="demo-opt${i === DEMO.top ? " top" : ""}" data-i="${i}" style="--i:${i}; --p:${p / 100}">
+            <span class="demo-fill" aria-hidden="true"></span>
+            <span class="demo-left"><span class="body-2">${esc(word)}</span><span class="demo-tags" data-tags></span></span>
+            <span class="demo-pct caption-1">${p}%</span>
+          </button>`).join("")}
+      </div>
+      <div class="demo-result" id="demo-result" hidden>
+        <p class="body-1">${esc(d.result)}</p>
+        <p class="body-6 muted">${esc(d.lesson)}</p>
+        <a class="btn btn-primary button-md" href="${gameHref(GAMES[0])}">${esc(d.cta)}${icon("arrow-right", "icon-sm icon-move")}</a>
+        <p class="caption-5 muted">${esc(d.note)}</p>
+      </div>
+    </div>`;
+}
+
+function answerDemo(choice) {
+  const demo = $("demo");
+  if (!demo || demo.classList.contains("answered")) return;
+  const d = DEMO[lang];
+  demo.classList.add("answered");
+  demo.querySelectorAll(".demo-opt").forEach((b) => {
+    const i = Number(b.dataset.i);
+    const tags = [];
+    if (i === choice) { b.classList.add("mine"); tags.push(`<span class="demo-tag tag-mine caption-3">${esc(d.mine)}</span>`); }
+    if (i === DEMO.truth) tags.push(`<span class="demo-tag tag-true caption-3">${esc(d.inReport)}</span>`);
+    b.querySelector("[data-tags]").innerHTML = tags.join("");
+    b.setAttribute("aria-disabled", "true");
+    b.setAttribute("aria-pressed", String(i === choice));
+  });
+  const blank = $("demo-blank");
+  blank.textContent = DEMO.options[DEMO.top][0];
+  blank.classList.add("filled");
+  const bajtek = $("demo-bajtek");
+  bajtek.src = "bajtek/oops.png";
+  bajtek.classList.add("pop");
+  $("demo-result").hidden = false;
+  $("demo-live").textContent = `${d.result} ${d.lesson}`;
+}
+
 function render() {
   $("main").innerHTML = `
     <section class="hero" id="top" aria-labelledby="hero-title">
@@ -371,39 +480,36 @@ function render() {
             ${ctaButton()}
             <p class="caption-2 muted">${esc(T.ctaNote)}</p>
           </div>
-          <ul class="facts" aria-label="${esc(T.factsLabel)}">
-            ${T.facts.map(([ic, f]) => `<li class="body-6 muted">${icon(ic)}${esc(f)}</li>`).join("")}
-          </ul>
         </div>
-        <div class="hero-art"><img src="bajtek/idle.png" alt="" width="248" height="288" fetchpriority="high"></div>
+        ${demoHTML()}
       </div>
     </section>
 
-    <section class="section container" id="games" aria-labelledby="games-title">
-      <header class="section-head reveal" data-key="games-head">
-        <h2 id="games-title" class="heading-4 md:heading-2">${esc(T.gamesTitle)}</h2>
-        <p class="body-8 muted">${esc(T.gamesLead)}</p>
+    <section class="section container" id="program" aria-labelledby="program-title">
+      <header class="section-head reveal" data-key="program-head">
+        <h2 id="program-title" class="heading-4 md:heading-2">${esc(T.programTitle)}</h2>
+        <p class="body-8 muted">${esc(T.programLead)}</p>
       </header>
-      <div class="games stagger" data-key="games-grid">
+      <ol class="fixes stagger" data-key="fixes">
         ${GAMES.map((g, i) => {
           const d = g[lang];
           return `
-          <article class="game" style="--tint:${g.tint}; --i:${i}" aria-labelledby="game-${i + 1}">
-            <div class="game-top">
-              <div class="game-label">
-                <p class="caption-3 game-step">${esc(T.step)} ${i + 1} · ${esc(d.verb)}</p>
-                <h3 class="heading-5" id="game-${i + 1}">${esc(d.name)}</h3>
-              </div>
+          <li class="fix" style="--tint:${g.tint}; --i:${i}">
+            <div class="fix-problem">${icon("quotes", "icon-lg")}<p class="title-1">${esc(d.problem)}</p></div>
+            <div class="fix-solution">
               <img src="bajtek/${g.mood}.png" alt="" loading="lazy" width="248" height="288">
+              <div class="fix-copy">
+                <p class="caption-3 fix-step">${esc(T.step)} ${i + 1} · ${esc(d.minutes)}</p>
+                <h3 class="heading-6 fix-name"><a href="${gameHref(g)}">${esc(d.name)}</a></h3>
+                <p class="body-6">${esc(d.fix)}</p>
+              </div>
             </div>
-            <div class="game-body">
-              <p class="body-1">${esc(d.benefit)}</p>
-              <p class="body-3 muted">${esc(d.what)}</p>
-              <ul class="meta">${d.meta.map((m) => `<li class="caption-4">${esc(m)}</li>`).join("")}</ul>
-              <div class="game-play"><a class="btn btn-secondary button-md" href="${gameHref(g)}" aria-label="${esc(T.play)}: ${esc(d.name)}">${esc(T.play)}${icon("arrow-right", "icon-sm icon-move")}</a></div>
-            </div>
-          </article>`;
+          </li>`;
         }).join("")}
+      </ol>
+      <div class="section-cta reveal" data-key="program-cta">
+        ${ctaButton()}
+        <p class="caption-2 muted">${esc(T.programNote)}</p>
       </div>
     </section>
 
@@ -469,9 +575,15 @@ function render() {
 
   // Navigation: desktop links and the mobile panel share the same labels
   $("nav-links").innerHTML = SECTIONS.map((id, i) => `<a class="nav-link title-4" href="#${id}">${esc(T.nav[i])}</a>`).join("");
+  const navCta = $("nav-cta");
+  navCta.textContent = T.navCta;
+  navCta.href = gameHref(GAMES[0]);
   const items = SECTIONS.map((id, i) => `<li style="--d:${i * 60}ms"><a class="menu-link heading-4" href="#${id}">${esc(T.nav[i])}</a></li>`);
   items.push(`<li style="--d:${SECTIONS.length * 60}ms">${ctaButton()}</li>`);
   $("menu-list").innerHTML = items.join("");
+
+  $("demo").querySelectorAll(".demo-opt").forEach((b) => b.addEventListener("click", () => answerDemo(Number(b.dataset.i))));
+  $("demo-live").textContent = "";
 
   setFaqSchema();
   setupReveals();
@@ -619,6 +731,9 @@ function setLang(l) {
 }
 
 document.querySelectorAll("#lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+// The demo swaps Bajtek's mood after an answer, so load that picture early
+new Image().src = "bajtek/oops.png";
 
 const urlLang = new URLSearchParams(location.search).get("lang");
 setLang(urlLang === "en" || urlLang === "pl" ? urlLang : readSavedLang() || "pl");
