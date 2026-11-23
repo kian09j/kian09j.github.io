@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex">
+<title>Nie ma takiej strony | AI w pracy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M60 26V13' stroke='%2337352f' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='60' cy='10' r='8' fill='%23f5c84c' stroke='%2337352f' stroke-width='4'/%3E%3Crect x='10' y='26' width='100' height='84' rx='28' fill='%23ffffff' stroke='%2337352f' stroke-width='6'/%3E%3Crect x='24' y='42' width='72' height='52' rx='16' fill='%23f1f1ef' stroke='%2337352f' stroke-width='4'/%3E%3Cellipse cx='45' cy='66' rx='7' ry='10' fill='%2337352f'/%3E%3Cellipse cx='75' cy='66' rx='7' ry='10' fill='%2337352f'/%3E%3C/svg%3E">
+<!-- GitHub Pages serves this file at any missing address, so every path here starts from the site root -->
+<link rel="stylesheet" href="/site.css">
+<style>
+  .lost {
+    min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: var(--space-300); padding-top: var(--space-900); padding-bottom: var(--space-700); text-align: center;
+  }
+  .lost-art { position: relative; display: grid; place-items: center; width: 176px; height: 176px; }
+  .lost-art::before { content: ""; position: absolute; inset: 0; border-radius: var(--radius-full); background: #fbf3db; }
+  .lost-art img { position: relative; width: auto; height: 152px; }
+  .lost-copy { display: flex; flex-direction: column; align-items: center; gap: var(--space-300); }
+  .lost h1, .lost p { max-width: 560px; }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Nawigacja">
+  <a class="logo body-1" href="/" data-home><img src="/bajtek/idle.png" alt="" width="248" height="288"><span data-lang-block="pl">AI <span>w pracy</span></span><span data-lang-block="en" hidden>AI <span>at work</span></span></a>
+  <div class="lang" id="lang" role="group" aria-label="Język / Language">
+    <button type="button" class="button-xsm" data-lang="pl" aria-pressed="true">PL</button>
+    <button type="button" class="button-xsm" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</nav>
+
+<main class="container lost">
+  <div class="lost-art"><img src="/bajtek/oops.png" alt="" width="248" height="288"></div>
+  <div data-lang-block="pl" lang="pl" class="lost-copy">
+    <h1 class="heading-3 md:heading-2">Tej strony tu nie ma</h1>
+    <p class="body-8 muted">Link może być stary albo mieć literówkę. Wszystkie cztery gry znajdziesz na stronie głównej.</p>
+    <a class="btn btn-primary button-md" href="/" data-home>Wróć do gier</a>
+  </div>
+  <div data-lang-block="en" lang="en" class="lost-copy" hidden>
+    <h1 class="heading-3 md:heading-2">This page isn't here</h1>
+    <p class="body-8 muted">The link may be old or have a typo. All four games are on the home page.</p>
+    <a class="btn btn-primary button-md" href="/" data-home>Back to the games</a>
+  </div>
+</main>
+
+<script>
+const TITLES = { pl: "Nie ma takiej strony | AI w pracy", en: "Page not found | AI at work" };
+function setLang(l) {
+  const lang = l === "en" ? "en" : "pl";
+  document.documentElement.lang = lang;
+  document.title = TITLES[lang];
+  document.querySelectorAll("[data-lang-block]").forEach((el) => { el.hidden = el.dataset.langBlock !== lang; });
+  document.querySelectorAll("#lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  document.querySelectorAll("[data-home]").forEach((a) => { a.href = `/?lang=${lang}`; });
+  try { localStorage.setItem("lang", lang); } catch (e) { /* storage unavailable */ }
+}
+document.querySelectorAll("#lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+let saved = null;
+try { saved = localStorage.getItem("lang"); } catch (e) { /* storage unavailable */ }
+setLang(saved || "pl");
+</script>
+</body>
+</html>
