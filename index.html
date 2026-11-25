@@ -34,25 +34,21 @@
   .nav-cta { display: none; }
   @media (min-width: 768px) { .nav-cta { display: inline-flex; } }
 
-  /* Hero: the pitch on the left, tip cards on the right */
-  .hero-inner { display: grid; gap: var(--space-700); padding-top: var(--space-900); padding-bottom: var(--space-700); }
-  .hero-text { min-width: 0; }
-  .hero-title {
-    max-width: 680px; width: fit-content; padding-bottom: var(--space-75);
-    background: linear-gradient(90deg, #000000, #666666); -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .hero-sub { max-width: 680px; margin-top: var(--space-200); }
-  .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-100) var(--space-200); margin-top: var(--space-400); }
+  /* Hero: a big Bajtek on the left, tip cards on the right */
+  .hero-inner { display: grid; justify-items: center; gap: var(--space-300); padding-top: var(--space-900); padding-bottom: var(--space-700); }
+  .hero-bajtek { width: auto; height: 180px; animation: float 6s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(calc(var(--space-100) * -1)); } }
+  .hero-inner .tips { width: 100%; max-width: 560px; }
   @media (min-width: 960px) {
     .hero { padding-top: var(--space-700); }
-    .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); align-items: start; gap: var(--space-600); }
-    .hero-text { padding-top: var(--space-800); }
+    .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); align-items: center; gap: var(--space-600); }
+    .hero-bajtek { height: 380px; }
+    .hero-inner .tips { max-width: none; }
   }
 
   /* Tips: four short cards about how AI works, each tied to the game that teaches it */
   .tips { position: relative; display: flex; flex-direction: column; gap: var(--space-200); }
-  .tips-bajtek { position: absolute; top: 0; right: var(--space-300); width: auto; height: 104px; transform: translateY(-70%); }
-  .tips-kicker { color: var(--accent); padding-right: var(--space-900); }
+  .tips-kicker { color: var(--accent); }
   .tip-list { display: flex; flex-direction: column; gap: var(--space-100); }
   .tip {
     display: flex; align-items: flex-start; gap: var(--space-200); padding: var(--space-200) var(--space-300);
@@ -184,6 +180,7 @@
     .js .stagger.in > *, .faq-item[open] .faq-answer { animation-name: fade; }
     .tagline .w { opacity: 1; transition: none; }
     .tip, .tip:hover { transition: none; transform: none; }
+    .hero-bajtek { animation: none; }
     .menu li { transform: none; }
     .fix:hover .fix-solution img, .faq-item[open] summary .icon { transform: none; }
   }
@@ -386,7 +383,6 @@ function ctaButton() {
 function tipsHTML() {
   return `
     <aside class="tips" aria-label="${esc(T.tipsLabel)}">
-      <img class="tips-bajtek" src="bajtek/idle.png" alt="" width="248" height="288">
       <p class="caption-3 tips-kicker">${esc(T.tipsKicker)}</p>
       <ul class="tip-list stagger" data-key="tips">
         ${TIPS.map((t, i) => {
@@ -410,14 +406,8 @@ function render() {
   $("main").innerHTML = `
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="container hero-inner">
-        <div class="hero-text">
-          <h1 id="hero-title" class="hero-title heading-3 md:heading-1">${lines(T.h1)}</h1>
-          <p class="hero-sub body-8 md:body-7 muted">${esc(T.lead)}</p>
-          <div class="hero-cta">
-            ${ctaButton()}
-            <p class="caption-2 muted">${esc(T.ctaNote)}</p>
-          </div>
-        </div>
+        <h1 id="hero-title" class="sr-only">${esc(T.h1.join(" "))}</h1>
+        <img class="hero-bajtek" src="bajtek/idle.png" alt="" width="248" height="288">
         ${tipsHTML()}
       </div>
     </section>
